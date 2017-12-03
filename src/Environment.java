@@ -59,6 +59,10 @@ public class Environment implements Cloneable {
         cars.add(car);
     }
 
+    public void clear() {
+        cars.clear();
+    }
+
     /** @return length of each car (in pixels) */
     public double carLength() {
         return 40;
