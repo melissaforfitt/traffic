@@ -1,0 +1,7 @@
+Build with:
+
+ant
+
+Then run with
+
+java -jar dist/lib/traffic.jar
