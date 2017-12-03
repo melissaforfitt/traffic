@@ -41,6 +41,11 @@ public class Display extends JPanel
         }
     }
 
+    /** Reset to our initial state */
+    public void reset() {
+        xOffset = 0;
+    }
+
     /** Draw a car.
      *  @param position Car position.
      *  @param lane Car lane.

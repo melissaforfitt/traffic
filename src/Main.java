@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         final Environment environment = new Environment();
-        Display display = new Display(environment);
+        final Display display = new Display(environment);
         environment.setDisplay(display);
 
         frame.setLayout(new BorderLayout());
@@ -20,6 +20,7 @@ public class Main {
         restart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 environment.clear();
+                display.reset();
                 addCars(environment);
             }
         });
@@ -35,8 +36,10 @@ public class Main {
      *  @param e Environment to use.
      */
     private static void addCars(Environment e) {
-        /* Add a couple of cars */
-        e.add(new Car(0, 2, 0, Color.RED));
-        e.add(new Car(100, 3, 0, Color.BLUE));
+        /* Add some random cars */
+        Random r = new Random();
+        for (int i = 0; i < 10; ++i) {
+            e.add(new Car(e.carLength() * 1.2 * i, r.nextInt(20) / 4.0, r.nextInt(3), new Color(r.nextInt(0xffffff))));
+        }
     }
 };
