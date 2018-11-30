@@ -52,8 +52,8 @@ public class Main extends Application {
         e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
         e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
         e.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
-        e.add(new Car(336, 10, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
         e.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
-        e.add(new Car(432,  8, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
     }
 };

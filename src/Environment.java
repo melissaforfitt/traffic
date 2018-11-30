@@ -27,6 +27,13 @@ public class Environment implements Cloneable {
                 }
 
                 tick((now - last) * 1e-9);
+                double furthest = 0;
+                for (Car i: cars) {
+                    if (i.getPosition() > furthest) {
+                        furthest = i.getPosition();
+                    }
+                }
+                display.setEnd((int) furthest);
                 display.draw();
                 last = now;
             }
