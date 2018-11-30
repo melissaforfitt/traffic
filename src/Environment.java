@@ -20,13 +20,17 @@ public class Environment implements Cloneable {
     public void setDisplay(Display display) {
         this.display = display;
 
+        /* Start a timer to update things */
         new AnimationTimer() {
             public void handle(long now) {
                 if (last == 0) {
                     last = now;
                 }
 
+                /* Update the model */
                 tick((now - last) * 1e-9);
+
+                /* Update the view */
                 double furthest = 0;
                 for (Car i: cars) {
                     if (i.getPosition() > furthest) {
