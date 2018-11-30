@@ -1,6 +1,5 @@
 import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.event.*;
+import javafx.animation.*;
 
 /** A class which represents the environment that we are working in.  In other words,
  *  this class describes the road and the cars that are on the road.
@@ -13,6 +12,7 @@ public class Environment implements Cloneable {
     private Display display;
     /** Number of lanes to have on the road */
     private int lanes = 4;
+    private long last;
 
     /** Set the Display object that we are working with.  This must be called
      *  before anything will happen.
@@ -20,20 +20,17 @@ public class Environment implements Cloneable {
     public void setDisplay(Display display) {
         this.display = display;
 
-        /* Start a timer to update everything every 40ms */
-        new Timer(40, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                tick();
-                double furthest = 0;
-                for (Car i: cars) {
-                    if (i.getPosition() > furthest) {
-                        furthest = i.getPosition();
-                    }
+        new AnimationTimer() {
+            public void handle(long now) {
+                if (last == 0) {
+                    last = now;
                 }
-                display.setEnd((int) furthest);
-                display.repaint();
+
+                tick((now - last) * 1e-9);
+                display.draw();
+                last = now;
             }
-        }).start();
+        }.start();
     }
 
     /** Return a copy of this environment */
@@ -69,10 +66,10 @@ public class Environment implements Cloneable {
     }
 
     /** Update the state of the environment after some short time has passed */
-    private void tick() {
+    private void tick(double elapsed) {
         Environment before = Environment.this.clone();
         for (Car i: cars) {
-            i.tick(before);
+            i.tick(before, elapsed);
         }
     }
 

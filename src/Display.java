@@ -1,43 +1,37 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javafx.scene.canvas.*;
+import javafx.scene.paint.*;
+import javafx.geometry.*;
 
 /** Class to display our environment (i.e. the road and the cars) */
-public class Display extends JPanel
+public class Display extends Canvas
 {
     /** Last known size of our display, or null if not yet known */
-    private Dimension size;
+    private Bounds bounds;
     /** Height of each lane in pixels */
-    private int laneHeight = 16;
+    private int laneHeight = 24;
     /** Height of car in pixels */
-    private int carHeight = 14;
+    private int carHeight = 22;
     /** Distance to move the display off the left of the panel */
     private int xOffset = 0;
     /** Distance to move the display off the top of the panel */
     private int yOffset = 16;
-    /** Our last known graphics context */
-    private Graphics2D context;
     /** The Environment that we are displaying */
     private Environment environment;
 
-    /* Dashed and solid strokes to draw the roads with */
-    private final static float dash[] = { 10.0f };
-    private final static BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
-    private final static BasicStroke solid = new BasicStroke(2.0f);
-
     public Display(Environment environment) {
+        super(800, 600);
         this.environment = environment;
     }
 
     /** Set where the end of our road is, in pixels */
     public void setEnd(int end) {
-        if (size == null) {
+        if (bounds == null) {
             return;
         }
 
         /* Scroll the road leftwards so that we can see the end of the road at the right of the display */
-        if ((end + xOffset) + (size.width / 4) > size.width) {
-            xOffset -= size.width / 4;
+        if ((end + xOffset) + (bounds.getWidth() / 4) > bounds.getWidth()) {
+            xOffset -= bounds.getWidth() / 4;
         }
     }
 
@@ -52,36 +46,40 @@ public class Display extends JPanel
      *  @param color Car colour.
      */
     public void car(int position, int lane, Color color) {
+        GraphicsContext gc = getGraphicsContext2D();
+
         int pad = laneHeight - carHeight;
-        context.setColor(Color.BLACK);
-        context.drawRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
-        context.setColor(color);
-        context.fillRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
+        gc.setStroke(Color.BLACK);
+        gc.strokeRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
+        gc.setFill(color);
+        gc.fillRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void draw() {
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.clearRect(0, 0, getWidth(), getHeight());
 
-        size = getSize();
-        context = (Graphics2D) g;
+        bounds = getBoundsInLocal();
 
         /* Draw the dashed road lines */
-        context.setStroke(dashed);
+        //gc.setLineDashes(1, 1);
         for (int i = 1; i < environment.getLanes(); ++i) {
-            context.drawLine(0, yOffset + i * laneHeight, size.width, yOffset + i * laneHeight);
+            gc.moveTo(0, yOffset + i * laneHeight);
+            gc.lineTo(bounds.getWidth(), yOffset + i * laneHeight);
+            gc.stroke();
         }
 
         /* Draw the main road lines */
-        context.setStroke(solid);
-        context.setColor(Color.BLACK);
-        context.drawLine(0, yOffset, size.width, yOffset);
-        context.drawLine(0, yOffset + environment.getLanes() * laneHeight, size.width, yOffset + environment.getLanes() * laneHeight);
+        gc.setLineDashes(null);
+        gc.setStroke(Color.BLACK);
+        gc.moveTo(0, yOffset);
+        gc.lineTo(bounds.getWidth(), yOffset);
+        gc.moveTo(0, yOffset + environment.getLanes() * laneHeight);
+        gc.lineTo(bounds.getWidth(), yOffset + environment.getLanes() * laneHeight);
+        gc.stroke();
 
         /* Draw the cars */
         environment.draw();
-
-	/* Ensure that the display is up to date */
-        Toolkit.getDefaultToolkit().sync();
     }
 
     public void setCarHeight(int carHeight) {

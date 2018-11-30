@@ -1,45 +1,59 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javafx.scene.layout.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
 import java.util.*;
+import javafx.scene.paint.*;
+import javafx.application.*;
+import javafx.stage.*;
 
-public class Main {
+public class Main extends Application {
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        launch(args);
+    }
+
+    public void start(Stage stage) {
+
         final Environment environment = new Environment();
         final Display display = new Display(environment);
         environment.setDisplay(display);
 
-        frame.setLayout(new BorderLayout());
+        VBox box = new VBox();
 
-        JPanel controls = new JPanel();
-        frame.add(controls, BorderLayout.PAGE_START);
+        stage.setTitle("Traffic");
+        stage.setScene(new Scene(box, 800, 600));
 
-        JButton restart = new JButton("Restart");
-        controls.add(restart);
-        restart.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        HBox controls = new HBox();
+        Button restart = new Button("Restart");
+        controls.getChildren().add(restart);
+        box.getChildren().add(controls);
+
+        restart.setOnMouseClicked(e -> {
                 environment.clear();
                 display.reset();
                 addCars(environment);
-            }
-        });
-        
-        frame.add(display, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setVisible(true);
+            });
+
+        box.getChildren().add(display);
 
         addCars(environment);
+
+        stage.show();
     }
 
     /** Add the required cars to an environment.
      *  @param e Environment to use.
      */
     private static void addCars(Environment e) {
-        /* Add some random cars */
+        /* Add an `interesting' set of cars */
         Random r = new Random();
-        for (int i = 0; i < 10; ++i) {
-            e.add(new Car(e.carLength() * 1.2 * i, r.nextInt(20) / 4.0, r.nextInt(3), new Color(r.nextInt(0xffffff))));
-        }
+        e.add(new Car(  0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car( 48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(144, 60, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(336, 10, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
+        e.add(new Car(432,  8, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0)));
     }
 };
