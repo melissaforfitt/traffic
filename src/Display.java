@@ -55,14 +55,15 @@ public class Display extends Canvas
         gc.fillRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
     }
 
+    /** Draw the whole display; we do the roads, then ask Environment to draw the cars */
     public void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
 
         bounds = getBoundsInLocal();
 
-        /* Draw the dashed road lines */
-        //gc.setLineDashes(1, 1);
+        /* Draw the road lines */
+        gc.setStroke(Color.LIGHTSTEELBLUE);
         for (int i = 1; i < environment.getLanes(); ++i) {
             gc.moveTo(0, yOffset + i * laneHeight);
             gc.lineTo(bounds.getWidth(), yOffset + i * laneHeight);

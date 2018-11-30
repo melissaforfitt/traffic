@@ -1,5 +1,6 @@
 import javafx.scene.paint.*;
 
+/** State of a car on the road */
 public class Car {
 
     /** Position of this car on the road (i.e. how far down the road it is) in pixels */
