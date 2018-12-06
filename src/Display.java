@@ -65,6 +65,7 @@ public class Display extends Canvas
         /* Draw the road lines */
         gc.setStroke(Color.LIGHTSTEELBLUE);
         for (int i = 1; i < environment.getLanes(); ++i) {
+            gc.beginPath();
             gc.moveTo(0, yOffset + i * laneHeight);
             gc.lineTo(bounds.getWidth(), yOffset + i * laneHeight);
             gc.stroke();
@@ -72,6 +73,7 @@ public class Display extends Canvas
 
         /* Draw the main road lines */
         gc.setLineDashes(null);
+        gc.beginPath();
         gc.setStroke(Color.BLACK);
         gc.moveTo(0, yOffset);
         gc.lineTo(bounds.getWidth(), yOffset);
