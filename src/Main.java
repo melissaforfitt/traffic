@@ -1,3 +1,4 @@
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,12 +7,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     ArrayList<Car> carArray = new ArrayList<Car>();
+
+    MediaPlayer player;
 
     public static void main(String[] args) {
         launch(args);
@@ -42,6 +47,8 @@ public class Main extends Application {
         box.getChildren().add(display);
 
         addCars(environment);
+
+        trafficSounds();
 
         stage.show();
 
@@ -91,6 +98,17 @@ public class Main extends Application {
 
         carArray.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
         e.add(carArray.get(8));
+
+    }
+
+    private void trafficSounds() {
+
+        // Find traffic sound effect file and play it
+        final Media sounds = new Media(Paths.get("traffic-sounds.wav").toUri().toString());
+        player = new MediaPlayer(sounds);
+        player.play();
+
+        player.setVolume(10.0);
 
     }
 

@@ -88,7 +88,6 @@ public class Environment implements Cloneable {
         Environment before = Environment.this.clone();
         for (Car i : cars) {
             i.tick(before, elapsed, i);
-            overtake(i);
         }
     }
 
@@ -127,6 +126,8 @@ public class Environment implements Cloneable {
     }
 
     public void overtake(Car car) {
+
+        // TODO: CALL OVERTAKE METHOD SOMEWHERE
 
         int lane;
 
