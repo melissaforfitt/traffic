@@ -17,8 +17,6 @@ public class Main extends Application {
 
     ArrayList<Car> carArray = new ArrayList<Car>();
     MediaPlayer player;
-    boolean allowOvertaking = true;
-    boolean allowUndertaking = true;
 
     public static void main(String[] args) {
         launch(args);
@@ -82,14 +80,14 @@ public class Main extends Application {
         // Allow user to decide if overtaking is allowed
         overtaking.setOnMouseClicked(event -> {
 
-            allowOvertaking = false;
+            environment.setOvertaking(false);
 
         });
 
         // Allow user to decide if undertaking is allowed
         undertaking.setOnMouseClicked(event -> {
 
-            allowUndertaking = false;
+            environment.setUndertaking(false);
 
         });
 
@@ -115,16 +113,6 @@ public class Main extends Application {
 
         // TODO: CLICK ON A CAR TO ANALYSE ITS SPEED
         // speedAnalysis(Car clicked)
-
-        // Set up initial rules for cars
-        for (Car car : carArray) {
-            // If car has crashed, display this
-            if (environment.collisionCheck(car) == true) {
-                System.out.println("Car crashed");
-            }
-            // Allow cars to overtake each other
-            environment.overtake(car, allowOvertaking, allowUndertaking);
-        }
 
     }
 
