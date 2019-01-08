@@ -59,6 +59,12 @@ public class Car {
         return collided;
     }
 
+    public void accelerate() {
+
+        speed = speed + 5;
+
+    }
+
     public String speedAnalysis(Car car) {
 
         String analysis = "";

@@ -17,6 +17,8 @@ public class Main extends Application {
 
     ArrayList<Car> carArray = new ArrayList<Car>();
     MediaPlayer player;
+    boolean allowOvertaking = true;
+    boolean allowUndertaking = true;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,14 +37,23 @@ public class Main extends Application {
 
         HBox controls = new HBox();
         Button restart = new Button("Restart");
+        Button accelerate = new Button("Accelerate");
         Button overtaking = new Button("Ban Overtaking");
+        Button undertaking = new Button("Ban Undertaking");
         TextField speedLimit = new TextField();
         speedLimit.setPrefColumnCount(3);
         Button setSpeed = new Button("Set Speed Limit");
+        TextField lanes = new TextField();
+        lanes.setPrefColumnCount(3);
+        Button setLanes = new Button("Set Lane Amount");
         controls.getChildren().add(restart);
+        controls.getChildren().add(accelerate);
         controls.getChildren().add(overtaking);
+        controls.getChildren().add(undertaking);
         controls.getChildren().add(speedLimit);
         controls.getChildren().add(setSpeed);
+        controls.getChildren().add(lanes);
+        controls.getChildren().add(setLanes);
         box.getChildren().add(controls);
 
         restart.setOnMouseClicked(e -> {
@@ -59,6 +70,34 @@ public class Main extends Application {
 
         stage.show();
 
+        // Set up initial rules for cars
+        for (Car car : carArray) {
+            // environment.overtake(car, allowOvertaking, allowUndertaking);
+        }
+
+        // User can control when cars accelerate
+        accelerate.setOnMouseClicked(event -> {
+
+            for (Car car : carArray) {
+                car.accelerate();
+            }
+
+        });
+
+        // Allow user to decide if overtaking is allowed
+        overtaking.setOnMouseClicked(event -> {
+
+            allowOvertaking = false;
+
+        });
+
+        // Allow user to decide if undertaking is allowed
+        undertaking.setOnMouseClicked(event -> {
+
+            allowUndertaking = false;
+
+        });
+
         // If speed limit button is clicked, add restrictions to all car speeds
         setSpeed.setOnMouseClicked(event -> {
 
@@ -67,6 +106,15 @@ public class Main extends Application {
             for (Car c : carArray) {
                 environment.setSpeedLimit(c, limit);
             }
+
+        });
+
+        // Set number of lanes to amount user has inputted
+        setLanes.setOnMouseClicked(event -> {
+
+            int lanesNumber = Integer.parseInt(lanes.getText());
+
+            environment.setLanes(lanesNumber);
 
         });
 

@@ -108,6 +108,12 @@ public class Environment implements Cloneable {
         return closest;
     }
 
+    public void setLanes(int userDefined) {
+
+        lanes = userDefined;
+
+    }
+
     /** @return Number of lanes */
     public int getLanes() {
         return lanes;
@@ -125,23 +131,37 @@ public class Environment implements Cloneable {
 
     }
 
-    public void overtake(Car car) {
-
-        // TODO: CALL OVERTAKE METHOD SOMEWHERE
+    public void overtake(Car car, boolean allowOvertaking, boolean allowUndertaking) {
 
         int lane;
 
-        // If car is getting close to car in front, overtake or undertake
+        // If car is getting close to car in front, overtake or undertake (if allowed)
         if (car.getPosition() == nextCar(car).getPosition() - 20) {
             lane = car.getLane();
-            // Overtake
-            if (lane < 4) {
-                lane = lane + 1;
-                car.lane = lane;
-            } else {
+            if (allowOvertaking == true && allowUndertaking == true) {
+                // Overtake
+                if (lane < 4) {
+                    lane = lane + 1;
+                    car.lane = lane;
+                } else {
+                    // Undertake
+                    if (lane > 1) {
+                        lane = lane - 1;
+                        car.lane = lane;
+                    }
+                }
+            } else if (allowOvertaking == false && allowUndertaking == true) {
                 // Undertake
-                lane = lane - 1;
-                car.lane = lane;
+                if (lane > 1) {
+                    lane = lane - 1;
+                    car.lane = lane;
+                }
+            } else if (allowOvertaking == true && allowUndertaking == false) {
+                // Overtake
+                if (lane < 4) {
+                    lane = lane + 1;
+                    car.lane = lane;
+                }
             }
         }
 
@@ -149,7 +169,14 @@ public class Environment implements Cloneable {
 
     public void setSpeedLimit(Car car, int limit) {
 
-        car.speed = limit;
+        // If car speed is bigger than limit, slow car down to the speed limit
+        if (car.speed > limit) {
+            car.speed = limit;
+        }
+
+        if (car.speed < limit) {
+
+        }
 
     }
 
