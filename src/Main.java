@@ -70,11 +70,6 @@ public class Main extends Application {
 
         stage.show();
 
-        // Set up initial rules for cars
-        for (Car car : carArray) {
-            // environment.overtake(car, allowOvertaking, allowUndertaking);
-        }
-
         // User can control when cars accelerate
         accelerate.setOnMouseClicked(event -> {
 
@@ -121,11 +116,16 @@ public class Main extends Application {
         // TODO: CLICK ON A CAR TO ANALYSE ITS SPEED
         // speedAnalysis(Car clicked)
 
-        // TODO: FIX NULL POINTER EXCEPTION FOR CARS CRASHING
-        /*
-         * for (Car c : carArray) { if (environment.collisionCheck(c) == true) {
-         * System.out.println("Car crashed"); } }
-         */
+        // Set up initial rules for cars
+        for (Car car : carArray) {
+            // If car has crashed, display this
+            if (environment.collisionCheck(car) == true) {
+                System.out.println("Car crashed");
+            }
+            // Allow cars to overtake each other
+            environment.overtake(car, allowOvertaking, allowUndertaking);
+        }
+
     }
 
     /**

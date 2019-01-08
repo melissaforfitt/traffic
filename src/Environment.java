@@ -15,7 +15,7 @@ public class Environment implements Cloneable {
     /** Number of lanes to have on the road */
     private int lanes = 4;
     private long last;
-    boolean collided;
+    boolean collided = false;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -121,10 +121,10 @@ public class Environment implements Cloneable {
 
     public boolean collisionCheck(Car car) {
 
-        collided = false;
-
-        if (car.getPosition() == nextCar(car).getPosition()) {
-            collided = true;
+        if (nextCar(car) != null) {
+            if (car.getPosition() == nextCar(car).getPosition()) {
+                collided = true;
+            }
         }
 
         return collided;
@@ -135,32 +135,35 @@ public class Environment implements Cloneable {
 
         int lane;
 
-        // If car is getting close to car in front, overtake or undertake (if allowed)
-        if (car.getPosition() == nextCar(car).getPosition() - 20) {
-            lane = car.getLane();
-            if (allowOvertaking == true && allowUndertaking == true) {
-                // Overtake
-                if (lane < 4) {
-                    lane = lane + 1;
-                    car.lane = lane;
-                } else {
+        // Only overtake if there is actually a car in front
+        if (nextCar(car) != null) {
+            // If car is getting close to car in front, overtake or undertake (if allowed)
+            if (car.getPosition() == nextCar(car).getPosition() - 20) {
+                lane = car.getLane();
+                if (allowOvertaking == true && allowUndertaking == true) {
+                    // Overtake
+                    if (lane < 4) {
+                        lane = lane + 1;
+                        car.lane = lane;
+                    } else {
+                        // Undertake
+                        if (lane > 1) {
+                            lane = lane - 1;
+                            car.lane = lane;
+                        }
+                    }
+                } else if (allowOvertaking == false && allowUndertaking == true) {
                     // Undertake
                     if (lane > 1) {
                         lane = lane - 1;
                         car.lane = lane;
                     }
-                }
-            } else if (allowOvertaking == false && allowUndertaking == true) {
-                // Undertake
-                if (lane > 1) {
-                    lane = lane - 1;
-                    car.lane = lane;
-                }
-            } else if (allowOvertaking == true && allowUndertaking == false) {
-                // Overtake
-                if (lane < 4) {
-                    lane = lane + 1;
-                    car.lane = lane;
+                } else if (allowOvertaking == true && allowUndertaking == false) {
+                    // Overtake
+                    if (lane < 4) {
+                        lane = lane + 1;
+                        car.lane = lane;
+                    }
                 }
             }
         }
