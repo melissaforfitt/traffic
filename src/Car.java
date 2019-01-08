@@ -10,7 +10,7 @@ public class Car {
     /** Current speed in pixels per second */
     private double speed;
     /** Lane that this car is on */
-    private int lane;
+    public int lane;
     /** Colour of this car's display */
     private Color color;
     /** Whether the car has collided or not */
@@ -30,11 +30,9 @@ public class Car {
     }
 
     /** Update this car after `elapsed' seconds have passed */
-    public void tick(Environment environment, double elapsed, boolean collided) {
+    public void tick(Environment environment, double elapsed, Car car) {
 
-        if (collided == false) {
-            position += speed * elapsed;
-        }
+        position += speed * elapsed;
 
     }
 
@@ -50,7 +48,27 @@ public class Car {
         return color;
     }
 
-    public boolean getCollided() {
+    public boolean getCollided(Environment environment, Car car) {
+
+        if (environment.collisionCheck(car) == true) {
+            collided = true;
+        } else {
+            collided = false;
+        }
+
         return collided;
     }
+
+    public String speedAnalysis(Car car) {
+
+        String analysis = "";
+
+        double speed = car.speed;
+
+        analysis = "Car's speed is" + speed;
+
+        return analysis;
+
+    }
+
 }

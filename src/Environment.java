@@ -87,7 +87,8 @@ public class Environment implements Cloneable {
     private void tick(double elapsed) {
         Environment before = Environment.this.clone();
         for (Car i : cars) {
-            i.tick(before, elapsed, collided);
+            i.tick(before, elapsed, i);
+            overtake(i);
         }
     }
 
@@ -124,4 +125,25 @@ public class Environment implements Cloneable {
         return collided;
 
     }
+
+    public void overtake(Car car) {
+
+        int lane;
+
+        // If car is getting close to car in front, overtake or undertake
+        if (car.getPosition() == nextCar(car).getPosition() - 20) {
+            lane = car.getLane();
+            // Overtake
+            if (lane < 4) {
+                lane = lane + 1;
+                car.lane = lane;
+            } else {
+                // Undertake
+                lane = lane - 1;
+                car.lane = lane;
+            }
+        }
+
+    }
+
 }

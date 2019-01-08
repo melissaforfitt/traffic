@@ -43,13 +43,16 @@ public class Main extends Application {
 
         addCars(environment);
 
-        // TODO: Add all cars to arraylist here
-
-        for (Car c : carArray) {
-            environment.collisionCheck(c);
-        }
-
         stage.show();
+
+        // TODO: CLICK ON A CAR TO ANALYSE ITS SPEED
+        // speedAnalysis(Car clicked)
+
+        // TODO: FIX NULL POINTER EXCEPTION FOR CARS CRASHING
+        /*
+         * for (Car c : carArray) { if (environment.collisionCheck(c) == true) {
+         * System.out.println("Car crashed"); } }
+         */
     }
 
     /**
@@ -58,18 +61,37 @@ public class Main extends Application {
      * @param e
      *            Environment to use.
      */
-    private static void addCars(Environment e) {
+    private void addCars(Environment e) {
         /* Add an `interesting' set of cars */
         Random r = new Random();
-        e.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(144, 60, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
-        e.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+
+        carArray.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(0));
+
+        carArray.add(new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(1));
+
+        carArray.add(new Car(144, 60, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(2));
+
+        carArray.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(3));
+
+        carArray.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(4));
+
+        carArray.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(5));
+
+        carArray.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(6));
+
+        carArray.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(7));
+
+        carArray.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false));
+        e.add(carArray.get(8));
+
     }
 
 };
