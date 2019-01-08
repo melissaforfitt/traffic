@@ -5,6 +5,7 @@ import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -15,7 +16,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     ArrayList<Car> carArray = new ArrayList<Car>();
-
     MediaPlayer player;
 
     public static void main(String[] args) {
@@ -35,7 +35,14 @@ public class Main extends Application {
 
         HBox controls = new HBox();
         Button restart = new Button("Restart");
+        Button overtaking = new Button("Ban Overtaking");
+        TextField speedLimit = new TextField();
+        speedLimit.setPrefColumnCount(3);
+        Button setSpeed = new Button("Set Speed Limit");
         controls.getChildren().add(restart);
+        controls.getChildren().add(overtaking);
+        controls.getChildren().add(speedLimit);
+        controls.getChildren().add(setSpeed);
         box.getChildren().add(controls);
 
         restart.setOnMouseClicked(e -> {
@@ -51,6 +58,17 @@ public class Main extends Application {
         trafficSounds();
 
         stage.show();
+
+        // If speed limit button is clicked, add restrictions to all car speeds
+        setSpeed.setOnMouseClicked(event -> {
+
+            int limit = Integer.parseInt(speedLimit.getText());
+
+            for (Car c : carArray) {
+                environment.setSpeedLimit(c, limit);
+            }
+
+        });
 
         // TODO: CLICK ON A CAR TO ANALYSE ITS SPEED
         // speedAnalysis(Car clicked)

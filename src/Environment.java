@@ -147,4 +147,10 @@ public class Environment implements Cloneable {
 
     }
 
+    public void setSpeedLimit(Car car, int limit) {
+
+        car.speed = limit;
+
+    }
+
 }

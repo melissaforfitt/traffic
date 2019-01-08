@@ -8,7 +8,7 @@ public class Car {
      */
     private double position;
     /** Current speed in pixels per second */
-    private double speed;
+    public double speed;
     /** Lane that this car is on */
     public int lane;
     /** Colour of this car's display */
