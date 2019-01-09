@@ -77,6 +77,14 @@ public class Environment implements Cloneable {
             if (i.slowedDown == false) {
                 slowDown(i);
             }
+            i.slowedDown = true; // Reset boolean so cars can slow down again in future
+
+            // TODO:
+            // If car has completed its overtake manouvre, go back to as far left lane as
+            // they can
+            if (i.overtakeComplete == true) {
+
+            }
 
         }
 
@@ -177,6 +185,7 @@ public class Environment implements Cloneable {
                     if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
+                        car.overtakeComplete = true;
                     } else {
                         // Undertake
                         if (lane == totalLanes) {
@@ -195,6 +204,7 @@ public class Environment implements Cloneable {
                     if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
+                        car.overtakeComplete = true;
                     }
                 }
             }

@@ -15,21 +15,25 @@ public class Car {
     private Color color;
     /** Whether the car has collided or not */
     private boolean collided;
-    /** Whether the car has slowed down to prevent collision yet **/
+    /** Whether the car has slowed down to prevent collision yet */
     public boolean slowedDown;
+    /** If car has completed an overtake manouevre */
+    public boolean overtakeComplete = false;
 
-    public Car(double position, double speed, int lane, Color color, boolean collided, boolean slowedDown) {
+    public Car(double position, double speed, int lane, Color color, boolean collided, boolean slowedDown,
+            boolean overtakeComplete) {
         this.position = position;
         this.speed = speed;
         this.lane = lane;
         this.color = color;
         this.collided = collided;
         this.slowedDown = slowedDown;
+        this.overtakeComplete = overtakeComplete;
     }
 
     /** @return a new Car object with the same state as this one */
     public Car clone() {
-        return new Car(position, speed, lane, color, collided, slowedDown);
+        return new Car(position, speed, lane, color, collided, slowedDown, overtakeComplete);
     }
 
     /** Update this car after `elapsed' seconds have passed */
