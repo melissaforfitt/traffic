@@ -16,8 +16,8 @@ public class Environment implements Cloneable {
     private int lanes = 4;
     private long last;
     boolean collided = false;
-    boolean overtaking;
-    boolean undertaking;
+    boolean overtaking = true;
+    boolean undertaking = true;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -134,10 +134,9 @@ public class Environment implements Cloneable {
 
     public boolean collisionCheck(Car car) {
 
-        // TODO: FIX COLLISION CHECKER (DOUBLE NUMBERS WILL VERY RARELY EQUAL EACH
-        // OTHER, DO WITHIN RANGE)
         if (nextCar(car) != null) {
-            if (car.getPosition() <= nextCar(car).getPosition()) {
+            if (car.getPosition() >= nextCar(car).getPosition() - 40
+                    && car.getPosition() <= nextCar(car).getPosition()) {
                 collided = true;
             }
         }
@@ -165,7 +164,8 @@ public class Environment implements Cloneable {
         // Only overtake if there is actually a car in front
         if (nextCar(car) != null) {
             // If car is getting close to car in front, overtake or undertake (if allowed)
-            if (car.getPosition() == nextCar(car).getPosition()) {
+            if (car.getPosition() >= nextCar(car).getPosition() - 80
+                    && car.getPosition() <= nextCar(car).getPosition() - 40) {
                 lane = car.getLane();
                 if (allowOvertaking == true && allowUndertaking == true) {
                     // Overtake
