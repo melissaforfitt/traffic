@@ -73,6 +73,11 @@ public class Environment implements Cloneable {
             // Allow cars to overtake each other
             overtake(i, overtaking, undertaking);
 
+            // Slow down speed of car if it is getting too close to car in front
+            if (i.slowedDown == false) {
+                slowDown(i);
+            }
+
         }
 
     }
@@ -206,6 +211,19 @@ public class Environment implements Cloneable {
 
         if (car.speed < limit) {
 
+        }
+
+    }
+
+    public void slowDown(Car car) {
+
+        // If car is getting too close to car in front, slow its speed down
+        if (nextCar(car) != null) {
+            if (car.getPosition() >= nextCar(car).getPosition() - 150
+                    && car.getPosition() <= nextCar(car).getPosition() - 80) {
+                car.speed = car.speed - 2;
+                car.slowedDown = true;
+            }
         }
 
     }
