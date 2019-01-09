@@ -13,7 +13,7 @@ public class Environment implements Cloneable {
     /** The Display object that we are working with */
     private Display display;
     /** Number of lanes to have on the road */
-    private int lanes = 4;
+    private int totalLanes = 4;
     private long last;
     boolean collided = false;
     boolean overtaking = true;
@@ -128,13 +128,13 @@ public class Environment implements Cloneable {
 
     public void setLanes(int userDefined) {
 
-        lanes = userDefined;
+        totalLanes = userDefined;
 
     }
 
     /** @return Number of lanes */
     public int getLanes() {
-        return lanes;
+        return totalLanes;
     }
 
     public boolean collisionCheck(Car car) {
@@ -174,25 +174,25 @@ public class Environment implements Cloneable {
                 lane = car.getLane();
                 if (allowOvertaking == true && allowUndertaking == true) {
                     // Overtake
-                    if (lane < 4) {
+                    if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
                     } else {
                         // Undertake
-                        if (lane > 1) {
+                        if (lane == totalLanes) {
                             lane = lane - 1;
                             car.lane = lane;
                         }
                     }
                 } else if (allowOvertaking == false && allowUndertaking == true) {
                     // Undertake
-                    if (lane > 1) {
+                    if (lane == totalLanes) {
                         lane = lane - 1;
                         car.lane = lane;
                     }
                 } else if (allowOvertaking == true && allowUndertaking == false) {
                     // Overtake
-                    if (lane < 4) {
+                    if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
                     }
