@@ -66,14 +66,16 @@ public class Environment implements Cloneable {
     public void draw() {
 
         for (Car i : cars) {
+
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
 
             if (i.collided == false) {
                 // If car has crashed, display this
                 if (collisionCheck(i) == true) {
-                    System.out.println("Car crashed");
-                    carHorn();
                     i.collided = true;
+                    nextCar(i).collided = true;
+                    i.speed = 0;
+                    nextCar(i).speed = 0;
                 }
             }
 
@@ -157,11 +159,11 @@ public class Environment implements Cloneable {
         if (nextCar(car) != null) {
             if (car.getPosition() >= nextCar(car).getPosition() - 40
                     && car.getPosition() <= nextCar(car).getPosition()) {
-                collided = true;
+                car.collided = true;
             }
         }
 
-        return collided;
+        return car.collided;
 
     }
 

@@ -6,13 +6,13 @@ public class Car {
     /**
      * Position of this car on the road (i.e. how far down the road it is) in pixels
      */
-    private double position;
+    public double position;
     /** Current speed in pixels per second */
     public double speed;
     /** Lane that this car is on */
     public int lane;
     /** Colour of this car's display */
-    private Color color;
+    public Color color;
     /** Whether the car has collided or not */
     public boolean collided;
     /** Whether the car has slowed down to prevent collision yet */
