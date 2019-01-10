@@ -1,6 +1,9 @@
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * A class which represents the environment that we are working in. In other
@@ -65,9 +68,13 @@ public class Environment implements Cloneable {
         for (Car i : cars) {
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
 
-            // If car has crashed, display this
-            if (collisionCheck(i) == true) {
-                System.out.println("Car crashed");
+            if (i.collided == false) {
+                // If car has crashed, display this
+                if (collisionCheck(i) == true) {
+                    System.out.println("Car crashed");
+                    carHorn();
+                    i.collided = true;
+                }
             }
 
             // Allow cars to overtake each other
@@ -235,6 +242,17 @@ public class Environment implements Cloneable {
                 car.slowedDown = true;
             }
         }
+
+    }
+
+    private void carHorn() {
+
+        // Find traffic sound effect file and play it
+        final Media sounds = new Media(Paths.get("car-horn.wav").toUri().toString());
+        MediaPlayer player = new MediaPlayer(sounds);
+        player.play();
+
+        player.setVolume(10.0);
 
     }
 

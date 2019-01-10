@@ -14,7 +14,7 @@ public class Car {
     /** Colour of this car's display */
     private Color color;
     /** Whether the car has collided or not */
-    private boolean collided;
+    public boolean collided;
     /** Whether the car has slowed down to prevent collision yet */
     public boolean slowedDown;
     /** If car has completed an overtake manouevre */
