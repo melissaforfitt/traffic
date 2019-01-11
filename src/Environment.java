@@ -23,7 +23,6 @@ public class Environment implements Cloneable {
     boolean undertaking = true;
     boolean badLaneDiscipline = false;
     boolean farLeft;
-    Car beingOvertaken;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -191,10 +190,10 @@ public class Environment implements Cloneable {
 
         // Only overtake if there is actually a car in front
         if (nextCar(car) != null) {
-            beingOvertaken = nextCar(car); // Car in front that is being overtaken
+            car.overtaking = nextCar(car); // Car in front that is being overtaken
             // If car is getting close to car in front, overtake or undertake (if allowed)
-            if (car.getPosition() >= beingOvertaken.getPosition() - 80
-                    && car.getPosition() <= beingOvertaken.getPosition() - 40) {
+            if (car.getPosition() >= car.overtaking.getPosition() - 80
+                    && car.getPosition() <= car.overtaking.getPosition() - 40) {
                 int lane = car.getLane();
                 if (allowOvertaking == true && allowUndertaking == true) {
                     // Overtake
@@ -231,18 +230,19 @@ public class Environment implements Cloneable {
         int lane = car.getLane();
 
         // If car is now further ahead, mark overtake as complete
-        if (car.getPosition() >= beingOvertaken.getPosition() + 40) {
-            car.overtakeComplete = true;
-            if (lane > 1) {
-                if (car.movedLeft == false) {
-                    lane = lane - 1;
-                    System.out.println("Left lane is: " + lane);
-                    car.lane = lane;
-                    car.movedLeft = true;
+        if (car.overtaking != null) {
+            if (car.getPosition() >= car.overtaking.getPosition() + 40) {
+                car.overtakeComplete = true;
+                if (lane > 0) {
+                    if (car.movedLeft == false) {
+                        lane = lane - 1;
+                        car.lane = lane;
+                        car.movedLeft = true;
+                        car.overtaking = null; // Reset value so car can overtake again later
+                    }
                 }
             }
         }
-
     }
 
     public void setSpeedLimit(Car car, int limit) {

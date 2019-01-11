@@ -21,9 +21,11 @@ public class Car {
     public boolean overtakeComplete = false;
     /** Whether car has moved back to left lane after overtaking */
     public boolean movedLeft;
+    /** Check which car this car is overtaking */
+    public Car overtaking;
 
     public Car(double position, double speed, int lane, Color color, boolean collided, boolean slowedDown,
-            boolean overtakeComplete, boolean movedLeft) {
+            boolean overtakeComplete, boolean movedLeft, Car overtaking) {
         this.position = position;
         this.speed = speed;
         this.lane = lane;
@@ -36,7 +38,7 @@ public class Car {
 
     /** @return a new Car object with the same state as this one */
     public Car clone() {
-        return new Car(position, speed, lane, color, collided, slowedDown, overtakeComplete, movedLeft);
+        return new Car(position, speed, lane, color, collided, slowedDown, overtakeComplete, movedLeft, overtaking);
     }
 
     /** Update this car after `elapsed' seconds have passed */
