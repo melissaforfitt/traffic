@@ -167,9 +167,9 @@ public class Environment implements Cloneable {
     public void addRandomCar() {
 
         // Randomly generate more cars as they merge onto motorway
-        if (timer % 100 == 0) {
+        if (timer % 200 == 0) {
             Random r = new Random();
-            cars.add(new Car(timer, r.nextInt(80 + 1) + 10, r.nextInt(totalLanes + 1) + 0,
+            cars.add(new Car(timer, r.nextInt(80 + 1) + 10, 0,
                     new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false, null));
         }
 

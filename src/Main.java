@@ -1,5 +1,4 @@
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.application.Application;
@@ -11,12 +10,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    ArrayList<Car> carArray = new ArrayList<Car>();
     MediaPlayer player;
+    Text overtakingText = new Text();
+    Text undertakingText = new Text();
+    Text badLaneDisciplineText = new Text();
+    Text wetRoadsText = new Text();
+    Text speedLimitText = new Text();
+    Text laneNumberText = new Text();
 
     public static void main(String[] args) {
         launch(args);
@@ -33,30 +38,34 @@ public class Main extends Application {
         stage.setTitle("Traffic");
         stage.setScene(new Scene(box, 800, 600));
 
-        HBox controls = new HBox();
+        HBox controls1 = new HBox();
+        HBox controls2 = new HBox();
+        HBox controlsOutput = new HBox();
         Button restart = new Button("Restart");
         Button accelerate = new Button("Accelerate");
         Button overtaking = new Button("Ban Overtaking");
         Button undertaking = new Button("Ban Undertaking");
         Button badLaneDiscipline = new Button("Bad Lane Discipline");
-        Button badBraking = new Button("Bad Braking");
+        Button wetRoads = new Button("Wet Roads");
         TextField speedLimit = new TextField();
         speedLimit.setPrefColumnCount(3);
         Button setSpeed = new Button("Set Speed Limit");
         TextField lanes = new TextField();
         lanes.setPrefColumnCount(3);
         Button setLanes = new Button("Set Lane Amount");
-        controls.getChildren().add(restart);
-        controls.getChildren().add(accelerate);
-        controls.getChildren().add(overtaking);
-        controls.getChildren().add(undertaking);
-        controls.getChildren().add(badLaneDiscipline);
-        controls.getChildren().add(badBraking);
-        controls.getChildren().add(speedLimit);
-        controls.getChildren().add(setSpeed);
-        controls.getChildren().add(lanes);
-        controls.getChildren().add(setLanes);
-        box.getChildren().add(controls);
+        controls1.getChildren().add(restart);
+        controls1.getChildren().add(accelerate);
+        controls1.getChildren().add(overtaking);
+        controls1.getChildren().add(undertaking);
+        controls1.getChildren().add(badLaneDiscipline);
+        controls1.getChildren().add(wetRoads);
+        controls2.getChildren().add(speedLimit);
+        controls2.getChildren().add(setSpeed);
+        controls2.getChildren().add(lanes);
+        controls2.getChildren().add(setLanes);
+        box.getChildren().add(controls1);
+        box.getChildren().add(controls2);
+        box.getChildren().add(controlsOutput);
 
         restart.setOnMouseClicked(e -> {
             environment.clear();
@@ -84,12 +93,18 @@ public class Main extends Application {
 
             environment.setOvertaking(false);
 
+            overtakingText.setText("Overtaking is NOT allowed" + " ");
+            controlsOutput.getChildren().add(overtakingText);
+
         });
 
         // Allow user to decide if undertaking is allowed
         undertaking.setOnMouseClicked(event -> {
 
             environment.setUndertaking(false);
+
+            undertakingText.setText("Undertaking is NOT allowed" + " ");
+            controlsOutput.getChildren().add(undertakingText);
 
         });
 
@@ -98,12 +113,18 @@ public class Main extends Application {
 
             environment.setLaneDiscipline(true);
 
+            badLaneDisciplineText.setText("Bad lane discipline is: ON" + " ");
+            controlsOutput.getChildren().add(badLaneDisciplineText);
+
         });
 
         // Allow user to decide if cars should have worse brake efficiency
-        badBraking.setOnMouseClicked(event -> {
+        wetRoads.setOnMouseClicked(event -> {
 
             environment.setBrakingEfficiency(true);
+
+            wetRoadsText.setText("Wet road mode is: ON" + " ");
+            controlsOutput.getChildren().add(wetRoadsText);
 
         });
 
@@ -114,6 +135,9 @@ public class Main extends Application {
 
             environment.setSpeedLimit(limit);
 
+            speedLimitText.setText("Speed Limit is: " + limit + " ");
+            controlsOutput.getChildren().add(speedLimitText);
+
         });
 
         // Set number of lanes to amount user has inputted
@@ -122,6 +146,9 @@ public class Main extends Application {
             int lanesNumber = Integer.parseInt(lanes.getText());
 
             environment.setLanes(lanesNumber);
+
+            laneNumberText.setText("Number of lanes is: " + lanesNumber + " ");
+            controlsOutput.getChildren().add(laneNumberText);
 
         });
 
