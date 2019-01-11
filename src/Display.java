@@ -1,10 +1,10 @@
-import javafx.scene.canvas.*;
-import javafx.scene.paint.*;
-import javafx.geometry.*;
+import javafx.geometry.Bounds;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /** Class to display our environment (i.e. the road and the cars) */
-public class Display extends Canvas
-{
+public class Display extends Canvas {
     /** Last known size of our display, or null if not yet known */
     private Bounds bounds;
     /** Height of each lane in pixels */
@@ -29,7 +29,10 @@ public class Display extends Canvas
             return;
         }
 
-        /* Scroll the road leftwards so that we can see the end of the road at the right of the display */
+        /*
+         * Scroll the road leftwards so that we can see the end of the road at the right
+         * of the display
+         */
         if ((end + xOffset) + (bounds.getWidth() / 4) > bounds.getWidth()) {
             xOffset -= bounds.getWidth() / 4;
         }
@@ -40,22 +43,32 @@ public class Display extends Canvas
         xOffset = 0;
     }
 
-    /** Draw a car.
-     *  @param position Car position.
-     *  @param lane Car lane.
-     *  @param color Car colour.
+    /**
+     * Draw a car.
+     * 
+     * @param position
+     *            Car position.
+     * @param lane
+     *            Car lane.
+     * @param color
+     *            Car colour.
      */
     public void car(int position, int lane, Color color) {
         GraphicsContext gc = getGraphicsContext2D();
 
         int pad = laneHeight - carHeight;
         gc.setStroke(Color.BLACK);
-        gc.strokeRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
+        gc.strokeRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(),
+                laneHeight - pad);
         gc.setFill(color);
-        gc.fillRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(), laneHeight - pad);
+        gc.fillRect(xOffset + position, yOffset + lane * laneHeight + pad / 2, (int) environment.carLength(),
+                laneHeight - pad);
     }
 
-    /** Draw the whole display; we do the roads, then ask Environment to draw the cars */
+    /**
+     * Draw the whole display; we do the roads, then ask Environment to draw the
+     * cars
+     */
     public void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());

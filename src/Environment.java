@@ -1,6 +1,7 @@
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -79,7 +80,7 @@ public class Environment implements Cloneable {
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
 
             // Randomly generate more cars as they merge onto motorway
-            addRandomCar();
+            // addRandomCar();
 
             if (i.collided == false) {
                 // If car has crashed, display this
@@ -88,7 +89,7 @@ public class Environment implements Cloneable {
                     nextCar(i).collided = true;
                     i.speed = 0;
                     nextCar(i).speed = 0;
-                    carHorn();
+                    carHorn(); // Make car horn noise to indicate car has crashed
                 }
             }
 
@@ -106,8 +107,11 @@ public class Environment implements Cloneable {
             }
             i.slowedDown = true; // Reset boolean so cars can slow down again in future
 
-        }
+            while (leftCar(i) == null && i.lane > 0) {
+                i.lane = i.lane - 1;
+            }
 
+        }
     }
 
     /**
@@ -154,6 +158,17 @@ public class Environment implements Cloneable {
         return closest;
     }
 
+    public Car leftCar(Car right) {
+        Car left = null;
+        for (Car i : cars) {
+            if (i != right && i.getLane() == right.getLane() - 1 && right.getPosition() > i.position - 50
+                    && right.getPosition() < i.position + 50) {
+                left = i;
+            }
+        }
+        return left;
+    }
+
     public void setLanes(int userDefined) {
 
         totalLanes = userDefined;
@@ -167,11 +182,15 @@ public class Environment implements Cloneable {
 
     public void addRandomCar() {
 
-        // Randomly generate more cars as they merge onto motorway
-        if (timer % 200 == 0) {
-            Random r = new Random();
-            cars.add(new Car(timer, r.nextInt(80 + 1) + 10, 0,
-                    new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false, null));
+        try {
+            // Randomly generate more cars as they merge onto motorway
+            if (timer % 200 == 0) {
+                Random r = new Random();
+                cars.add(new Car(timer, r.nextInt(80 + 1) + 10, 0,
+                        new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false, null));
+            }
+        } catch (ConcurrentModificationException e) {
+            System.out.println("Error");
         }
 
     }
@@ -228,8 +247,8 @@ public class Environment implements Cloneable {
         if (nextCar(car) != null) {
             car.overtaking = nextCar(car); // Car in front that is being overtaken
             // If car is getting close to car in front, overtake or undertake (if allowed)
-            if (car.getPosition() >= car.overtaking.getPosition() - 80
-                    && car.getPosition() <= car.overtaking.getPosition() - 40) {
+            if (car.getPosition() >= car.overtaking.getPosition() - 100
+                    && car.getPosition() <= car.overtaking.getPosition() - 20) {
                 int lane = car.getLane();
                 if (allowOvertaking == true && allowUndertaking == true) {
                     // Overtake
