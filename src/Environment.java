@@ -21,6 +21,9 @@ public class Environment implements Cloneable {
     boolean collided = false;
     boolean overtaking = true;
     boolean undertaking = true;
+    boolean badLaneDiscipline = false;
+    boolean farLeft;
+    Car beingOvertaken;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -76,24 +79,23 @@ public class Environment implements Cloneable {
                     nextCar(i).collided = true;
                     i.speed = 0;
                     nextCar(i).speed = 0;
+                    carHorn();
                 }
             }
 
             // Allow cars to overtake each other
             overtake(i, overtaking, undertaking);
 
+            // If bad lane discipline is not activated, move cars left after overtaking
+            if (badLaneDiscipline == false) {
+                moveToLeftLane(i);
+            }
+
             // Slow down speed of car if it is getting too close to car in front
             if (i.slowedDown == false) {
                 slowDown(i);
             }
             i.slowedDown = true; // Reset boolean so cars can slow down again in future
-
-            // TODO:
-            // If car has completed its overtake manouvre, go back to as far left lane as
-            // they can
-            if (i.overtakeComplete == true) {
-
-            }
 
         }
 
@@ -179,22 +181,26 @@ public class Environment implements Cloneable {
 
     }
 
-    public void overtake(Car car, boolean allowOvertaking, boolean allowUndertaking) {
+    public void setLaneDiscipline(boolean input) {
 
-        int lane;
+        badLaneDiscipline = input;
+
+    }
+
+    public void overtake(Car car, boolean allowOvertaking, boolean allowUndertaking) {
 
         // Only overtake if there is actually a car in front
         if (nextCar(car) != null) {
+            beingOvertaken = nextCar(car); // Car in front that is being overtaken
             // If car is getting close to car in front, overtake or undertake (if allowed)
-            if (car.getPosition() >= nextCar(car).getPosition() - 80
-                    && car.getPosition() <= nextCar(car).getPosition() - 40) {
-                lane = car.getLane();
+            if (car.getPosition() >= beingOvertaken.getPosition() - 80
+                    && car.getPosition() <= beingOvertaken.getPosition() - 40) {
+                int lane = car.getLane();
                 if (allowOvertaking == true && allowUndertaking == true) {
                     // Overtake
                     if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
-                        car.overtakeComplete = true;
                     } else {
                         // Undertake
                         if (lane == totalLanes) {
@@ -213,8 +219,26 @@ public class Environment implements Cloneable {
                     if (lane < totalLanes) {
                         lane = lane + 1;
                         car.lane = lane;
-                        car.overtakeComplete = true;
                     }
+                }
+            }
+        }
+
+    }
+
+    public void moveToLeftLane(Car car) {
+
+        int lane = car.getLane();
+
+        // If car is now further ahead, mark overtake as complete
+        if (car.getPosition() >= beingOvertaken.getPosition() + 40) {
+            car.overtakeComplete = true;
+            if (lane > 1) {
+                if (car.movedLeft == false) {
+                    lane = lane - 1;
+                    System.out.println("Left lane is: " + lane);
+                    car.lane = lane;
+                    car.movedLeft = true;
                 }
             }
         }

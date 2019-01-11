@@ -38,6 +38,7 @@ public class Main extends Application {
         Button accelerate = new Button("Accelerate");
         Button overtaking = new Button("Ban Overtaking");
         Button undertaking = new Button("Ban Undertaking");
+        Button badLaneDiscipline = new Button("Bad Lane Discipline");
         TextField speedLimit = new TextField();
         speedLimit.setPrefColumnCount(3);
         Button setSpeed = new Button("Set Speed Limit");
@@ -48,6 +49,7 @@ public class Main extends Application {
         controls.getChildren().add(accelerate);
         controls.getChildren().add(overtaking);
         controls.getChildren().add(undertaking);
+        controls.getChildren().add(badLaneDiscipline);
         controls.getChildren().add(speedLimit);
         controls.getChildren().add(setSpeed);
         controls.getChildren().add(lanes);
@@ -91,6 +93,13 @@ public class Main extends Application {
 
         });
 
+        // Allow user to decide if undertaking is allowed
+        badLaneDiscipline.setOnMouseClicked(event -> {
+
+            environment.setLaneDiscipline(true);
+
+        });
+
         // If speed limit button is clicked, add restrictions to all car speeds
         setSpeed.setOnMouseClicked(event -> {
 
@@ -123,43 +132,45 @@ public class Main extends Application {
      *            Environment to use.
      */
     private void addCars(Environment e) {
+
+        // TODO: ADD RANDOM CARS LATER ON JOINING ONTO MOTORWAY
         /* Add an `interesting' set of cars */
         Random r = new Random();
 
-        carArray.add(
-                new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false));
         e.add(carArray.get(0));
 
-        carArray.add(
-                new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(1));
 
-        carArray.add(
-                new Car(144, 60, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(144, 60, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(2));
 
-        carArray.add(
-                new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(3));
 
-        carArray.add(
-                new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(4));
 
-        carArray.add(
-                new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(5));
 
-        carArray.add(
-                new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(6));
 
-        carArray.add(
-                new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(7));
 
-        carArray.add(
-                new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false));
+        carArray.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
+                false, false));
         e.add(carArray.get(8));
 
     }
