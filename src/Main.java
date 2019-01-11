@@ -22,6 +22,7 @@ public class Main extends Application {
     Text wetRoadsText = new Text();
     Text speedLimitText = new Text();
     Text laneNumberText = new Text();
+    Text speedAnalysisText = new Text();
 
     public static void main(String[] args) {
         launch(args);
@@ -41,6 +42,7 @@ public class Main extends Application {
         HBox controls1 = new HBox();
         HBox controls2 = new HBox();
         HBox controlsOutput = new HBox();
+        HBox speedAnalysis = new HBox();
         Button restart = new Button("Restart");
         Button accelerate = new Button("Accelerate");
         Button overtaking = new Button("Ban Overtaking");
@@ -53,6 +55,7 @@ public class Main extends Application {
         TextField lanes = new TextField();
         lanes.setPrefColumnCount(3);
         Button setLanes = new Button("Set Lane Amount");
+        Button speedAnalysisButton = new Button("Speed Analysis");
         controls1.getChildren().add(restart);
         controls1.getChildren().add(accelerate);
         controls1.getChildren().add(overtaking);
@@ -63,9 +66,11 @@ public class Main extends Application {
         controls2.getChildren().add(setSpeed);
         controls2.getChildren().add(lanes);
         controls2.getChildren().add(setLanes);
+        speedAnalysis.getChildren().add(speedAnalysisButton);
         box.getChildren().add(controls1);
         box.getChildren().add(controls2);
         box.getChildren().add(controlsOutput);
+        box.getChildren().add(speedAnalysis);
 
         restart.setOnMouseClicked(e -> {
             environment.clear();
@@ -152,8 +157,13 @@ public class Main extends Application {
 
         });
 
-        // TODO: CLICK ON A CAR TO ANALYSE ITS SPEED
-        // speedAnalysis(Car clicked)
+        // Generate speed analysis of cars on motorway
+        speedAnalysisButton.setOnMouseClicked(event -> {
+
+            speedAnalysisText.setText(environment.speedAnalysis());
+            speedAnalysis.getChildren().add(speedAnalysisText);
+
+        });
 
     }
 
@@ -165,7 +175,6 @@ public class Main extends Application {
      */
     private void addCars(Environment e) {
 
-        // TODO: ADD RANDOM CARS LATER ON JOINING ONTO MOTORWAY
         /* Add an `interesting' set of cars */
         Random r = new Random();
 

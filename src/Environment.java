@@ -1,5 +1,6 @@
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -181,6 +182,7 @@ public class Environment implements Cloneable {
             if (car.getPosition() >= nextCar(car).getPosition() - 40
                     && car.getPosition() <= nextCar(car).getPosition()) {
                 car.collided = true;
+                nextCar(car).collided = true;
             }
         }
 
@@ -325,6 +327,26 @@ public class Environment implements Cloneable {
         player.play();
 
         player.setVolume(10.0);
+
+    }
+
+    public String speedAnalysis() {
+
+        // Find out the speed of the cars that are currently on the motorway
+        ArrayList<Double> carSpeeds = new ArrayList<Double>();
+
+        for (Car car : cars) {
+            if (collided == false) {
+                carSpeeds.add(car.speed);
+            }
+        }
+
+        Collections.sort(carSpeeds);
+
+        String analysis = "The speed of the cars ranges from " + carSpeeds.get(0) + "mph to "
+                + carSpeeds.get(carSpeeds.size() - 1) + "mph.";
+
+        return analysis;
 
     }
 
