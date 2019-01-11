@@ -39,6 +39,7 @@ public class Main extends Application {
         Button overtaking = new Button("Ban Overtaking");
         Button undertaking = new Button("Ban Undertaking");
         Button badLaneDiscipline = new Button("Bad Lane Discipline");
+        Button badBraking = new Button("Bad Braking");
         TextField speedLimit = new TextField();
         speedLimit.setPrefColumnCount(3);
         Button setSpeed = new Button("Set Speed Limit");
@@ -50,6 +51,7 @@ public class Main extends Application {
         controls.getChildren().add(overtaking);
         controls.getChildren().add(undertaking);
         controls.getChildren().add(badLaneDiscipline);
+        controls.getChildren().add(badBraking);
         controls.getChildren().add(speedLimit);
         controls.getChildren().add(setSpeed);
         controls.getChildren().add(lanes);
@@ -73,9 +75,7 @@ public class Main extends Application {
         // User can control when cars accelerate
         accelerate.setOnMouseClicked(event -> {
 
-            for (Car car : carArray) {
-                car.accelerate();
-            }
+            environment.accelerate();
 
         });
 
@@ -93,10 +93,17 @@ public class Main extends Application {
 
         });
 
-        // Allow user to decide if undertaking is allowed
+        // Allow user to decide if cars should have bad lane discipline
         badLaneDiscipline.setOnMouseClicked(event -> {
 
             environment.setLaneDiscipline(true);
+
+        });
+
+        // Allow user to decide if cars should have worse brake efficiency
+        badBraking.setOnMouseClicked(event -> {
+
+            environment.setBrakingEfficiency(true);
 
         });
 
@@ -105,9 +112,7 @@ public class Main extends Application {
 
             int limit = Integer.parseInt(speedLimit.getText());
 
-            for (Car c : carArray) {
-                environment.setSpeedLimit(c, limit);
-            }
+            environment.setSpeedLimit(limit);
 
         });
 
@@ -137,41 +142,32 @@ public class Main extends Application {
         /* Add an `interesting' set of cars */
         Random r = new Random();
 
-        carArray.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+        e.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false,
+                null));
+
+        e.add(new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 false, null));
-        e.add(carArray.get(0));
 
-        carArray.add(new Car(48, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(1));
+        e.add(new Car(148, 60, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(148, 60, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(2));
+        e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(3));
+        e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(4));
+        e.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(288, 77, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(5));
+        e.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(336, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(6));
+        e.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
-        carArray.add(new Car(384, 32, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(7));
-
-        carArray.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false,
-                false, false, null));
-        e.add(carArray.get(8));
+        e.add(new Car(432, 16, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                false, null));
 
     }
 

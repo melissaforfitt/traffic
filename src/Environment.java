@@ -1,9 +1,11 @@
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
 /**
  * A class which represents the environment that we are working in. In other
@@ -22,7 +24,9 @@ public class Environment implements Cloneable {
     boolean overtaking = true;
     boolean undertaking = true;
     boolean badLaneDiscipline = false;
+    boolean badBraking = false;
     boolean farLeft;
+    int timer;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -37,6 +41,8 @@ public class Environment implements Cloneable {
                 if (last == 0) {
                     last = now;
                 }
+
+                timer = timer + 1;
 
                 /* Update the model */
                 tick((now - last) * 1e-9);
@@ -70,6 +76,9 @@ public class Environment implements Cloneable {
         for (Car i : cars) {
 
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
+
+            // Randomly generate more cars as they merge onto motorway
+            addRandomCar();
 
             if (i.collided == false) {
                 // If car has crashed, display this
@@ -155,6 +164,17 @@ public class Environment implements Cloneable {
         return totalLanes;
     }
 
+    public void addRandomCar() {
+
+        // Randomly generate more cars as they merge onto motorway
+        if (timer % 100 == 0) {
+            Random r = new Random();
+            cars.add(new Car(timer, r.nextInt(80 + 1) + 10, r.nextInt(totalLanes + 1) + 0,
+                    new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false, null));
+        }
+
+    }
+
     public boolean collisionCheck(Car car) {
 
         if (nextCar(car) != null) {
@@ -183,6 +203,20 @@ public class Environment implements Cloneable {
     public void setLaneDiscipline(boolean input) {
 
         badLaneDiscipline = input;
+
+    }
+
+    public void setBrakingEfficiency(boolean input) {
+
+        badBraking = input;
+
+    }
+
+    public void setSpeedLimit(int limit) {
+
+        for (Car c : cars) {
+            setSpeedLimit(c, limit);
+        }
 
     }
 
@@ -258,13 +292,25 @@ public class Environment implements Cloneable {
 
     }
 
+    public void accelerate() {
+
+        for (Car car : cars) {
+            car.accelerate();
+        }
+
+    }
+
     public void slowDown(Car car) {
 
         // If car is getting too close to car in front, slow its speed down
         if (nextCar(car) != null) {
             if (car.getPosition() >= nextCar(car).getPosition() - 150
                     && car.getPosition() <= nextCar(car).getPosition() - 80) {
-                car.speed = car.speed - 2;
+                if (badBraking == true) {
+                    car.speed = car.speed - 0.5;
+                } else {
+                    car.speed = car.speed - 5;
+                }
                 car.slowedDown = true;
             }
         }
