@@ -50,6 +50,7 @@ public class Main extends Application {
         stage.setTitle("Traffic");
         stage.setScene(new Scene(box, 800, 600));
 
+        // Set up all of the GUI interface
         HBox controls1 = new HBox();
         HBox controls2 = new HBox();
         HBox controlsOutput = new HBox();
@@ -80,6 +81,7 @@ public class Main extends Application {
         box.getChildren().add(speedAnalysis);
         controlsOutput.getChildren().add(overtakingText);
 
+        // When restart button is clicked, refresh motorway to starting positions
         restart.setOnMouseClicked(e -> {
             environment.clear();
             display.reset();

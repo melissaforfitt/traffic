@@ -62,6 +62,7 @@ public class Car {
 
     public boolean getCollided(Environment environment, Car car) {
 
+        // Check and output whether a car has collided or not
         if (environment.collisionCheck(car) == true) {
             collided = true;
         } else {
@@ -73,19 +74,8 @@ public class Car {
 
     public void accelerate() {
 
+        // Increase the speed of the car
         speed = speed + 5;
-
-    }
-
-    public String speedAnalysis(Car car) {
-
-        String analysis = "";
-
-        double speed = car.speed;
-
-        analysis = "Car's speed is" + speed;
-
-        return analysis;
 
     }
 

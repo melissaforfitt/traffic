@@ -197,6 +197,7 @@ public class Environment implements Cloneable {
 
     public boolean collisionCheck(Car car) {
 
+        // Check whether a car has collided with another one
         if (nextCar(car) != null) {
             if (car.getPosition() >= nextCar(car).getPosition() - 40
                     && car.getPosition() <= nextCar(car).getPosition()) {
@@ -211,30 +212,35 @@ public class Environment implements Cloneable {
 
     public void setOvertaking(boolean input) {
 
+        // Allow user to change whether overtaking is allowed
         overtaking = input;
 
     }
 
     public void setUndertaking(boolean input) {
 
+        // Allow user to change undertaking settings (on/off)
         undertaking = input;
 
     }
 
     public void setLaneDiscipline(boolean input) {
 
+        // Allow user to change lane discipline of cars
         badLaneDiscipline = input;
 
     }
 
     public void setBrakingEfficiency(boolean input) {
 
+        // Allow user to make cars have bad braking efficiency
         badBraking = input;
 
     }
 
     public void setSpeedLimit(int limit) {
 
+        // When speed limit is set by user, apply this speed to the cars
         for (Car c : cars) {
             setSpeedLimit(c, limit);
         }
@@ -360,8 +366,10 @@ public class Environment implements Cloneable {
             }
         }
 
+        // Sort the speeds into ascending order
         Collections.sort(carSpeeds);
 
+        // Output current range of car speeds
         String analysis = "The speed of the cars ranges from " + carSpeeds.get(0) + "mph to "
                 + carSpeeds.get(carSpeeds.size() - 1) + "mph.";
 
