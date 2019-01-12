@@ -31,6 +31,7 @@ public class Environment implements Cloneable {
     boolean speedLimitSet = false;
     int timer;
     int speedLimit;
+    boolean carAllowed;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -82,7 +83,7 @@ public class Environment implements Cloneable {
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
 
             // Randomly generate more cars as they merge onto motorway
-            // addRandomCar();
+            addRandomCar();
 
             if (i.collided == false) {
                 // If car has crashed, display this
@@ -191,10 +192,24 @@ public class Environment implements Cloneable {
 
         try {
             // Randomly generate more cars as they merge onto motorway
-            if (timer % 200 == 0) {
+            if (timer % 250 == 0) {
                 Random r = new Random();
-                cars.add(new Car(timer, r.nextInt(80 + 1) + 10, 0,
-                        new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, null));
+                int newCarPosition = timer;
+                int randomLane = r.nextInt(totalLanes - 1) + 0;
+                for (Car car : cars) {
+                    // If a car is already in that location, don't add new car
+                    if (car.getLane() == totalLanes && car.getPosition() - 20 >= newCarPosition
+                            && car.getPosition() + 20 >= newCarPosition) {
+                        carAllowed = false;
+                    } else {
+                        carAllowed = true;
+                    }
+                }
+                if (carAllowed == true) {
+                    cars.add(new Car(newCarPosition, r.nextInt(80 + 1) + 10, randomLane,
+                            new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, null));
+                }
+                timer = timer + r.nextInt(100);
             }
         } catch (ConcurrentModificationException e) {
         }
@@ -393,6 +408,14 @@ public class Environment implements Cloneable {
                 + carSpeeds.get(carSpeeds.size() - 1) + "mph.";
 
         return analysis;
+
+    }
+
+    public void clearCars() {
+
+        // If reset button is clicked, remove all cars from arraylist
+        cars.clear();
+        timer = 0;
 
     }
 

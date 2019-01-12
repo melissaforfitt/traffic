@@ -88,6 +88,7 @@ public class Main extends Application {
         restart.setOnMouseClicked(e -> {
             environment.clear();
             display.reset();
+            environment.clearCars();
             addCars(environment);
         });
 
@@ -207,10 +208,10 @@ public class Main extends Application {
         e.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
-        e.add(new Car(80, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+        e.add(new Car(30, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
-        e.add(new Car(148, 60, 3, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+        e.add(new Car(128, 60, 3, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
         e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
@@ -219,10 +220,13 @@ public class Main extends Application {
         e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
-        e.add(new Car(288, 77, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+        e.add(new Car(50, 77, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
-        e.add(new Car(396, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+        e.add(new Car(320, 28, 3, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
+                null));
+
+        e.add(new Car(140, 28, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
     }
