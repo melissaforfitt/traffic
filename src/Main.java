@@ -80,6 +80,9 @@ public class Main extends Application {
         box.getChildren().add(controlsOutput);
         box.getChildren().add(speedAnalysis);
         controlsOutput.getChildren().add(overtakingText);
+        controlsOutput.getChildren().add(speedLimitText);
+        controlsOutput.getChildren().add(laneNumberText);
+        speedAnalysis.getChildren().add(speedAnalysisText);
 
         // When restart button is clicked, refresh motorway to starting positions
         restart.setOnMouseClicked(e -> {
@@ -99,7 +102,7 @@ public class Main extends Application {
         // User can control when cars accelerate
         accelerate.setOnMouseClicked(event -> {
 
-            environment.accelerate();
+            environment.accelerateAllCars();
 
         });
 
@@ -167,7 +170,6 @@ public class Main extends Application {
             environment.setSpeedLimit(limit);
 
             speedLimitText.setText("Speed Limit is: " + limit + " ");
-            controlsOutput.getChildren().add(speedLimitText);
 
         });
 
@@ -179,7 +181,6 @@ public class Main extends Application {
             environment.setLanes(lanesNumber);
 
             laneNumberText.setText("Number of lanes is: " + lanesNumber + " ");
-            controlsOutput.getChildren().add(laneNumberText);
 
         });
 
@@ -187,7 +188,6 @@ public class Main extends Application {
         speedAnalysisButton.setOnMouseClicked(event -> {
 
             speedAnalysisText.setText(environment.speedAnalysis());
-            speedAnalysis.getChildren().add(speedAnalysisText);
 
         });
 
@@ -204,26 +204,26 @@ public class Main extends Application {
         /* Add an `interesting' set of cars */
         Random r = new Random();
 
-        e.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false,
+        e.add(new Car(0, 63, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
                 null));
 
         e.add(new Car(80, 79, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
         e.add(new Car(148, 60, 3, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
         e.add(new Car(192, 74, 0, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
         e.add(new Car(240, 12, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
         e.add(new Car(288, 77, 2, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
         e.add(new Car(396, 28, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false,
-                false, null));
+                null));
 
     }
 

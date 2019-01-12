@@ -28,7 +28,9 @@ public class Environment implements Cloneable {
     boolean badLaneDiscipline = false;
     boolean badBraking = false;
     boolean farLeft;
+    boolean speedLimitSet = false;
     int timer;
+    int speedLimit;
 
     /**
      * Set the Display object that we are working with. This must be called before
@@ -94,7 +96,6 @@ public class Environment implements Cloneable {
             }
 
             // Allow cars to overtake each other
-            overtake(i, overtaking, undertaking);
 
             // If bad lane discipline is not activated, move cars left after overtaking
             if (badLaneDiscipline == false) {
@@ -102,10 +103,16 @@ public class Environment implements Cloneable {
             }
 
             // Slow down speed of car if it is getting too close to car in front
-            if (i.slowedDown == false) {
-                slowDown(i);
+            slowDown(i);
+
+            // Speed up car if there is nothing in front of it
+            if (speedLimitSet == true && i.speed < speedLimit) {
+                speedUp(i);
+            } else if (speedLimitSet == false && i.speed < 70) {
+                speedUp(i);
             }
-            i.slowedDown = true; // Reset boolean so cars can slow down again in future
+
+            // If there is no car in front, speed back up to speed limit
 
             while (leftCar(i) == null && i.lane > 0) {
                 i.lane = i.lane - 1;
@@ -187,10 +194,9 @@ public class Environment implements Cloneable {
             if (timer % 200 == 0) {
                 Random r = new Random();
                 cars.add(new Car(timer, r.nextInt(80 + 1) + 10, 0,
-                        new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, false, null));
+                        new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.0), false, false, false, null));
             }
         } catch (ConcurrentModificationException e) {
-            System.out.println("Error");
         }
 
     }
@@ -235,15 +241,6 @@ public class Environment implements Cloneable {
 
         // Allow user to make cars have bad braking efficiency
         badBraking = input;
-
-    }
-
-    public void setSpeedLimit(int limit) {
-
-        // When speed limit is set by user, apply this speed to the cars
-        for (Car c : cars) {
-            setSpeedLimit(c, limit);
-        }
 
     }
 
@@ -306,24 +303,19 @@ public class Environment implements Cloneable {
         }
     }
 
-    public void setSpeedLimit(Car car, int limit) {
+    public int setSpeedLimit(int limit) {
 
-        // If car speed is bigger than limit, slow car down to the speed limit
-        if (car.speed > limit) {
-            car.speed = limit;
-        }
-
-        if (car.speed < limit) {
-
-        }
-
-    }
-
-    public void accelerate() {
+        speedLimitSet = true;
+        speedLimit = limit;
 
         for (Car car : cars) {
-            car.accelerate();
+            // If car speed is bigger than limit, slow car down to the speed limit
+            if (car.speed > limit) {
+                car.speed = limit;
+            }
         }
+
+        return limit;
 
     }
 
@@ -331,15 +323,42 @@ public class Environment implements Cloneable {
 
         // If car is getting too close to car in front, slow its speed down
         if (nextCar(car) != null) {
-            if (car.getPosition() >= nextCar(car).getPosition() - 150
-                    && car.getPosition() <= nextCar(car).getPosition() - 80) {
+            if (car.getPosition() >= nextCar(car).getPosition() - 80
+                    && car.getPosition() <= nextCar(car).getPosition() - 50 && car.speed > 10) {
                 if (badBraking == true) {
                     car.speed = car.speed - 0.5;
                 } else {
                     car.speed = car.speed - 5;
                 }
-                car.slowedDown = true;
             }
+        }
+    }
+
+    public void speedUp(Car car) {
+
+        // If there is no car in front, speed up to maximum speed within limit
+        if (speedLimitSet == true) {
+            if (nextCar(car) == null || ((car.getPosition() >= nextCar(car).getPosition() - 150)
+                    && (car.getPosition() <= nextCar(car).getPosition() - 90))) {
+                do {
+                    car.accelerate();
+                } while (car.speed < speedLimit);
+            }
+        } else {
+            // If no speed limit is set, speed cars up to national speed limit (70mph)
+            if (nextCar(car) == null || ((car.getPosition() >= nextCar(car).getPosition() - 150)
+                    && (car.getPosition() <= nextCar(car).getPosition() - 90))) {
+                do {
+                    car.accelerate();
+                } while (car.speed < 70);
+            }
+        }
+    }
+
+    public void accelerateAllCars() {
+
+        for (Car car : cars) {
+            car.speed = car.speed + 5;
         }
 
     }
