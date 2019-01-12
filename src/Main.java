@@ -4,6 +4,7 @@ import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,6 +24,16 @@ public class Main extends Application {
     Text speedLimitText = new Text();
     Text laneNumberText = new Text();
     Text speedAnalysisText = new Text();
+    boolean overtakingOn = true;
+    boolean undertakingOn = true;
+    boolean badLaneDisciplineOn = false;
+    boolean wetRoadsOn = false;
+
+    // Combo boxes for user selection
+    public ComboBox<String> overtakingBox = new ComboBox<String>();
+    public ComboBox<String> undertakingBox = new ComboBox<String>();
+    public ComboBox<String> laneDisciplineBox = new ComboBox<String>();
+    public ComboBox<String> wetRoadsBox = new ComboBox<String>();
 
     public static void main(String[] args) {
         launch(args);
@@ -45,10 +56,6 @@ public class Main extends Application {
         HBox speedAnalysis = new HBox();
         Button restart = new Button("Restart");
         Button accelerate = new Button("Accelerate");
-        Button overtaking = new Button("Ban Overtaking");
-        Button undertaking = new Button("Ban Undertaking");
-        Button badLaneDiscipline = new Button("Bad Lane Discipline");
-        Button wetRoads = new Button("Wet Roads");
         TextField speedLimit = new TextField();
         speedLimit.setPrefColumnCount(3);
         Button setSpeed = new Button("Set Speed Limit");
@@ -58,10 +65,10 @@ public class Main extends Application {
         Button speedAnalysisButton = new Button("Speed Analysis");
         controls1.getChildren().add(restart);
         controls1.getChildren().add(accelerate);
-        controls1.getChildren().add(overtaking);
-        controls1.getChildren().add(undertaking);
-        controls1.getChildren().add(badLaneDiscipline);
-        controls1.getChildren().add(wetRoads);
+        controls1.getChildren().add(overtakingBox);
+        controls1.getChildren().add(undertakingBox);
+        controls1.getChildren().add(laneDisciplineBox);
+        controls1.getChildren().add(wetRoadsBox);
         controls2.getChildren().add(speedLimit);
         controls2.getChildren().add(setSpeed);
         controls2.getChildren().add(lanes);
@@ -71,6 +78,7 @@ public class Main extends Application {
         box.getChildren().add(controls2);
         box.getChildren().add(controlsOutput);
         box.getChildren().add(speedAnalysis);
+        controlsOutput.getChildren().add(overtakingText);
 
         restart.setOnMouseClicked(e -> {
             environment.clear();
@@ -93,43 +101,59 @@ public class Main extends Application {
 
         });
 
-        // Allow user to decide if overtaking is allowed
-        overtaking.setOnMouseClicked(event -> {
+        // Set up drop down list for user to select if overtaking is on/off
+        overtakingBox.setPromptText("Overtaking");
+        overtakingBox.getItems().addAll("On", "Off");
 
-            environment.setOvertaking(false);
+        overtakingBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 
-            overtakingText.setText("Overtaking is NOT allowed" + " ");
-            controlsOutput.getChildren().add(overtakingText);
-
-        });
-
-        // Allow user to decide if undertaking is allowed
-        undertaking.setOnMouseClicked(event -> {
-
-            environment.setUndertaking(false);
-
-            undertakingText.setText("Undertaking is NOT allowed" + " ");
-            controlsOutput.getChildren().add(undertakingText);
+            if (newValue == "On") {
+                environment.setOvertaking(true);
+            } else if (newValue == "Off") {
+                environment.setOvertaking(false);
+            }
 
         });
 
-        // Allow user to decide if cars should have bad lane discipline
-        badLaneDiscipline.setOnMouseClicked(event -> {
+        // Set up drop down list for user to select if undertaking is on/off
+        undertakingBox.setPromptText("Undertaking");
+        undertakingBox.getItems().addAll("On", "Off");
 
-            environment.setLaneDiscipline(true);
+        undertakingBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 
-            badLaneDisciplineText.setText("Bad lane discipline is: ON" + " ");
-            controlsOutput.getChildren().add(badLaneDisciplineText);
+            if (newValue == "On") {
+                environment.setUndertaking(true);
+            } else if (newValue == "Off") {
+                environment.setUndertaking(false);
+            }
 
         });
 
-        // Allow user to decide if cars should have worse brake efficiency
-        wetRoads.setOnMouseClicked(event -> {
+        // Set up drop down list for user to select if bad lane discipline is on/off
+        laneDisciplineBox.setPromptText("Bad Lane Discipline");
+        laneDisciplineBox.getItems().addAll("On", "Off");
 
-            environment.setBrakingEfficiency(true);
+        laneDisciplineBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 
-            wetRoadsText.setText("Wet road mode is: ON" + " ");
-            controlsOutput.getChildren().add(wetRoadsText);
+            if (newValue == "On") {
+                environment.setLaneDiscipline(true);
+            } else if (newValue == "Off") {
+                environment.setLaneDiscipline(false);
+            }
+
+        });
+
+        // Set up drop down list for user to select if wet road is on/off
+        wetRoadsBox.setPromptText("Wet Roads");
+        wetRoadsBox.getItems().addAll("On", "Off");
+
+        wetRoadsBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+
+            if (newValue == "On") {
+                environment.setBrakingEfficiency(true);
+            } else if (newValue == "Off") {
+                environment.setBrakingEfficiency(false);
+            }
 
         });
 
