@@ -29,6 +29,12 @@ public class Main extends Application {
     boolean badLaneDisciplineOn = false;
     boolean wetRoadsOn = false;
 
+    // Set initial speed limit if it hasn't been set by user
+    int limit = 70;
+
+    // Set number of lanes if it hasn't been set by user
+    int lanesNumber = 4;
+
     // Combo boxes for user selection
     public ComboBox<String> overtakingBox = new ComboBox<String>();
     public ComboBox<String> undertakingBox = new ComboBox<String>();
@@ -166,7 +172,11 @@ public class Main extends Application {
         // If speed limit button is clicked, add restrictions to all car speeds
         setSpeed.setOnMouseClicked(event -> {
 
-            int limit = Integer.parseInt(speedLimit.getText());
+            // Handle exception if user has not inputted any number
+            try {
+                limit = Integer.parseInt(speedLimit.getText());
+            } catch (NumberFormatException e) {
+            }
 
             environment.setSpeedLimit(limit);
 
@@ -177,7 +187,11 @@ public class Main extends Application {
         // Set number of lanes to amount user has inputted
         setLanes.setOnMouseClicked(event -> {
 
-            int lanesNumber = Integer.parseInt(lanes.getText());
+            // Handle exception if user has not inputted any number
+            try {
+                lanesNumber = Integer.parseInt(lanes.getText());
+            } catch (NumberFormatException e) {
+            }
 
             environment.setLanes(lanesNumber);
 

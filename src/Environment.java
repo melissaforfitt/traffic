@@ -82,8 +82,9 @@ public class Environment implements Cloneable {
 
             display.car((int) i.getPosition(), i.getLane(), i.getColor());
 
+            // NOTE: UNCOMMENT THIS FOR ADDING MORE CARS VERSION (90% works)
             // Randomly generate more cars as they merge onto motorway
-            addRandomCar();
+            // addRandomCar();
 
             if (i.collided == false) {
                 // If car has crashed, display this
